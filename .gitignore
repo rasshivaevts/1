@@ -1,0 +1,13 @@
+# Binaries
+expenses_tracker
+*.exe
+
+# SQLite database (для будущих этапов)
+*.db
+
+# Environment
+.env
+
+# IDE
+.idea/
+.vscode/

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} — Учёт трат</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">💰 Учёт трат</a>
+            <div class="nav-links">
+                <a href="/">Главная</a>
+                <a href="/expenses">Траты</a>
+                <a href="/expenses/new">Добавить</a>
+                <a href="/about">О проекте</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {{if eq .Content "home"}}
+            <h1>Добро пожаловать!</h1>
+            <p>Простой трекер личных трат на Go. Веб-приложение без сторонних
+               фреймворков — только стандартная библиотека Go.</p>
+            <p>Возможности:</p>
+            <ul>
+                <li>Добавление трат с указанием суммы, описания и даты</li>
+                <li>Просмотр списка всех трат</li>
+                <li>Подсчёт общей суммы расходов</li>
+            </ul>
+            <a href="/expenses/new" class="btn">Добавить первую трату &rarr;</a>
+
+        {{else if eq .Content "about"}}
+            <h1>О проекте</h1>
+            <p><strong>Учёт личных трат</strong> — учебный проект по веб-разработке на Go.</p>
+            <p>Технологический стек:</p>
+            <ul>
+                <li>Язык: Go (стандартная библиотека)</li>
+                <li>HTTP-сервер: net/http</li>
+                <li>Шаблоны: html/template</li>
+                <li>Хранилище: память (этап 2), далее SQLite</li>
+            </ul>
+            <p>Маршруты:</p>
+            <ul>
+                <li><code>/</code> — главная страница</li>
+                <li><code>/about</code> — описание проекта</li>
+                <li><code>/ping</code> — health-check (только GET, иначе 405)</li>
+                <li><code>/expenses</code> — список трат</li>
+                <li><code>/expenses/new</code> — форма добавления</li>
+            </ul>
+
+        {{else if eq .Content "expenses"}}
+            <h1>Мои траты</h1>
+            {{if not .Expenses}}
+                <p class="empty">Список трат пуст.
+                   <a href="/expenses/new">Добавить первую запись &rarr;</a></p>
+            {{else}}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Сумма</th>
+                            <th>Описание</th>
+                            <th>Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .Expenses}}
+                        <tr>
+                            <td>{{.ID}}</td>
+                            <td class="amount">{{printf "%.2f" .Amount}} &#8381;</td>
+                            <td>{{.Description}}</td>
+                            <td>{{.Date}}</td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="1"></td>
+                            <td class="amount total">
+                                <strong>{{printf "%.2f" .Total}} &#8381;</strong>
+                            </td>
+                            <td colspan="2">Итого</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            {{end}}
+            <a href="/expenses/new" class="btn">+ Добавить трату</a>
+
+        {{else if eq .Content "form"}}
+            <h1>Добавить трату</h1>
+            {{if .Errors}}
+                <div class="errors">
+                    {{range .Errors}}
+                        <p>&#9888; {{.}}</p>
+                    {{end}}
+                </div>
+            {{end}}
+            <form method="POST" action="/expenses">
+                <label for="amount">Сумма (&#8381;):</label>
+                <input type="number" id="amount" name="amount" step="0.01"
+                       min="0.01" value="{{.AmountVal}}" placeholder="100.00" required>
+
+                <label for="description">Описание:</label>
+                <input type="text" id="description" name="description"
+                       value="{{.Description}}"
+                       placeholder="Кофе, проезд, продукты..." required>
+
+                <label for="date">Дата:</label>
+                <input type="date" id="date" name="date" value="{{.DateVal}}">
+
+                <button type="submit" class="btn">Сохранить</button>
+                <a href="/expenses" class="btn btn-secondary">Отмена</a>
+            </form>
+        {{end}}
+    </main>
+
+    <footer>
+        <p>Учёт личных трат · Учебный проект на Go · 2025</p>
+    </footer>
+</body>
+</html>
