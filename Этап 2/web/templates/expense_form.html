@@ -1,0 +1,21 @@
+{{define "form_content"}}
+<h1>Добавить трату</h1>
+<form method="POST" action="/expenses">
+  <p>
+    <label>Сумма
+      <input type="number" step="0.01" min="0.01" name="amount" required>
+    </label>
+  </p>
+  <p>
+    <label>Описание
+      <input type="text" name="description" required>
+    </label>
+  </p>
+  <p>
+    <label>Дата
+      <input type="date" name="date" required>
+    </label>
+  </p>
+  <button type="submit">Сохранить</button>
+</form>
+{{end}}

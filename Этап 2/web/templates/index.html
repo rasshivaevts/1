@@ -1,0 +1,28 @@
+{{define "index_content"}}
+<h1>Мои траты</h1>
+
+{{if .Expenses}}
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Сумма</th>
+      <th>Описание</th>
+      <th>Дата</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .Expenses}}
+    <tr>
+      <td>{{.ID}}</td>
+      <td>{{printf "%.2f" .Amount}}</td>
+      <td>{{.Description}}</td>
+      <td>{{.Date.Format "2006-01-02"}}</td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+{{else}}
+<p>Пока трат нет. <a href="/expenses/new">Добавить первую</a>.</p>
+{{end}}
+{{end}}
