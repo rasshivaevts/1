@@ -22,10 +22,9 @@ func NewExpenseHandler(tmpl *template.Template) *ExpenseHandler {
 	}
 }
 
-// List отображает список всех трат
 func (h *ExpenseHandler) List(w http.ResponseWriter, r *http.Request) {
 	data := map[string]any{
-		"IsForm":   false, // Говорим layout, что это страница списка
+		"IsForm":   false, 
 		"Expenses": h.expenses,
 	}
 	if err := h.tmpl.ExecuteTemplate(w, "layout", data); err != nil {
@@ -33,17 +32,15 @@ func (h *ExpenseHandler) List(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// NewForm отображает форму добавления траты
 func (h *ExpenseHandler) NewForm(w http.ResponseWriter, r *http.Request) {
 	data := map[string]any{
-		"IsForm": true, // Говорим layout, что это страница формы
+		"IsForm": true, 
 	}
 	if err := h.tmpl.ExecuteTemplate(w, "layout", data); err != nil {
 		http.Error(w, "template error", http.StatusInternalServerError)
 	}
 }
 
-// Create обрабатывает отправку формы и сохраняет трату в памяти
 func (h *ExpenseHandler) Create(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
