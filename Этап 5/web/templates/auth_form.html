@@ -1,0 +1,21 @@
+{{define "auth_content"}}
+<div style="max-width: 400px; margin: 0 auto;">
+    {{if .IsLogin}}
+        <h2>Вход</h2>
+        <form method="POST" action="/login">
+            <p><input type="email" name="email" placeholder="Email" required style="width: 100%;"></p>
+            <p><input type="password" name="password" placeholder="Пароль" required style="width: 100%;"></p>
+            <button type="submit">Войти</button>
+            <a href="/register">Нет аккаунта? Регистрация</a>
+        </form>
+    {{else}}
+        <h2>Регистрация</h2>
+        <form method="POST" action="/register">
+            <p><input type="email" name="email" placeholder="Email" required style="width: 100%;"></p>
+            <p><input type="password" name="password" placeholder="Пароль" required style="width: 100%;"></p>
+            <button type="submit">Зарегистрироваться</button>
+            <a href="/login">Уже есть аккаунт? Войти</a>
+        </form>
+    {{end}}
+</div>
+{{end}}
